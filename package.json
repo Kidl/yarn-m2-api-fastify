@@ -1,0 +1,12 @@
+{
+  "name": "yarn-m2-api-fastify",
+  "version": "0.0.1",
+  "main": "server.js",
+  "author": "Vladislav Sevostyanov <vs@kidl.no>",
+  "dependencies": {
+    "@kidl.no/express-auth-middleware": "^0.0.6",
+    "axios": "^0.18.0",
+    "dotenv": "^7.0.0",
+    "fastify": "^2.1.0"
+  }
+}

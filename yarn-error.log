@@ -1,0 +1,36 @@
+Arguments: 
+  /usr/bin/node /usr/share/yarn/bin/yarn.js add dotenv
+
+PATH: 
+  /home/sevostyanov/Kidl/yarn-m2-api-fastify/node_modules/.bin:/home/sevostyanov/.cargo/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin
+
+Yarn version: 
+  1.12.3
+
+Node version: 
+  10.15.2
+
+Platform: 
+  linux x64
+
+Trace: 
+  SyntaxError: /home/sevostyanov/Kidl/yarn-m2-api-fastify/package.json: Unexpected token } in JSON at position 130
+      at JSON.parse (<anonymous>)
+      at /usr/share/yarn/lib/cli.js:1631:59
+      at Generator.next (<anonymous>)
+      at step (/usr/share/yarn/lib/cli.js:304:30)
+      at /usr/share/yarn/lib/cli.js:315:13
+
+npm manifest: 
+  {
+    "name": "yarn-m2-api-fastify",
+    "version": "0.0.1",
+    "main": "server.js",
+    "author": "Vladislav Sevostyanov <vs@kidl.no>",
+  }
+
+yarn manifest: 
+  No manifest
+
+Lockfile: 
+  No lockfile
