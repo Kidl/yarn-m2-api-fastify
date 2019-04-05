@@ -4,7 +4,6 @@ const checkEnvNotEmpty = require('./lib/checkEnvNotEmpty');
 
 const fastify = require('fastify')({logger: false});
 const routes = require('./routes');
-
 fastify.register(routes);
 
 (async () => {
