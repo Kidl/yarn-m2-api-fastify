@@ -1,0 +1,164 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "description": "yarn-m2-api-fastify service",
+    "version": "0.0.1",
+    "title": "yarn-m2-api-fastify",
+    "contact": {
+      "email": "system@kidl.no"
+    }
+  },
+  "host": "yarn-m2-api-fastify",
+  "basePath": "/",
+  "schemes": [
+    "http"
+  ],
+  "paths": {
+    "/type/{productType}": {
+      "get":  {
+        "tags": [
+          "products"
+        ],
+        "summary": "getProductsByType",
+        "description": "Find products by productType",
+        "operationId": "getProductsByType",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "productType",
+            "in": "path",
+            "description": "Type of products to return",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "currentPage",
+            "in": "query",
+            "description": "Paging",
+            "required": false,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad request"
+          }
+        },
+        "security": [
+          {
+            "jwt": ["apiKey"]
+          }
+        ]
+      }
+    },
+    "/{sku}": {
+      "get":  {
+        "tags": [
+          "products"
+        ],
+        "summary": "getProductBySku",
+        "description": "Find product by sku",
+        "operationId": "getProductBySku",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "sku",
+            "in": "path",
+            "description": "sku of product to return",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad request"
+          }
+        },
+        "security": [
+          {
+            "jwt": ["apiKey"]
+          }
+        ]
+      }
+    },
+    "/cache/all": {
+      "delete": {
+        "tags": [
+          "cache"
+        ],
+        "summary": "deleteAll",
+        "description": "Delete all the cache",
+        "operationId": "deleteAll",
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "security": [
+          {
+            "jwt": ["apiKey"]
+          }
+        ]
+      }
+    },
+    "/cache/{sku}": {
+      "delete": {
+        "tags": [
+          "cache"
+        ],
+        "summary": "del",
+        "description": "Deletes product cache by sku",
+        "operationId": "del",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "sku",
+            "in": "path",
+            "description": "sku of product cache to delete",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad request"
+          }
+        },
+        "security": [
+          {
+            "jwt": ["apiKey"]
+          }
+        ]
+      }
+    }
+  },
+  "securityDefinitions": {
+    "jwt": {
+      "type": "apiKey",
+      "name": "x-access-token",
+      "in": "header"
+    }
+  },
+  "externalDocs": {
+    "description": "Find out more about service",
+    "url": "https://kidlno.atlassian.net/wiki/spaces/HY/pages/24838147/Microservices+Woolit"
+  }
+}
