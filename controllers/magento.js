@@ -68,7 +68,7 @@ async function getProductsByType(productType, currentPage) {
   return products;
 }
 
-async function getProductsBySku(sku) {
+async function getProductBySku(sku) {
   const cached = await cache.get(arguments);
 
   if (cached) {
@@ -91,7 +91,8 @@ async function getProductsBySku(sku) {
     },
   };
 
-  const product = await magento.getProducts(params);
+  const products = await magento.getProducts(params);
+  const product = products[0];
 
   if (!cached && product) {
     cache.set(arguments, product);
@@ -102,5 +103,5 @@ async function getProductsBySku(sku) {
 
 module.exports = {
   getProductsByType,
-  getProductsBySku,
+  getProductBySku,
 };
