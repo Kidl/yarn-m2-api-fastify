@@ -14,7 +14,7 @@ fastify.register(routes);
   } catch (err) {
     fastify.log.error(err);
 
-    const slackNotify = require('./lib/slackNotify');
+    slackNotify(err.toString());
 
     process.exit(1);
   }
