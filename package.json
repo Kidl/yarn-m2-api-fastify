@@ -8,6 +8,7 @@
     "axios": "^0.18.0",
     "dotenv": "^7.0.0",
     "fastify": "^2.1.0",
-    "ioredis": "^4.9.0"
+    "ioredis": "^4.9.0",
+    "slack-notify": "^0.1.7"
   }
 }

@@ -4,6 +4,8 @@ const checkEnvNotEmpty = require('./lib/checkEnvNotEmpty');
 
 const fastify = require('fastify')({logger: false});
 const routes = require('./routes');
+const slackNotify = require('./lib/slackNotify');
+
 fastify.register(routes);
 
 (async () => {
@@ -11,6 +13,8 @@ fastify.register(routes);
     await fastify.listen(3000);
   } catch (err) {
     fastify.log.error(err);
+
+    const slackNotify = require('./lib/slackNotify');
 
     process.exit(1);
   }
