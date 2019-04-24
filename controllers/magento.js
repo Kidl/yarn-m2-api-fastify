@@ -14,7 +14,7 @@ async function getProductsByType(productType, currentPage) {
   const pageSize = process.env.PRODUCTS_PAGE_SIZE;
 
   if (!allowedProductTypes || allowedProductTypes.indexOf(productType) === -1) {
-    return new Error('Invalid query');
+    return new Error('Invalid productType');
   }
 
   const attributeSetName = productTypesMap && productTypesMap[productType] || productType;
@@ -25,41 +25,7 @@ async function getProductsByType(productType, currentPage) {
     return;
   }
 
-  const params = {
-    searchCriteria: {
-      filter_groups: [
-        {
-          filters: [
-            {
-              field: 'attribute_set_id',
-              value: attributeSetId,
-              condition_type: 'eq'
-            }
-          ]
-        },
-        {
-          filters: [
-            {
-              field: 'type_id',
-              value: 'configurable',
-              condition_type: 'eq'
-            }
-          ]
-        }
-      ],
-      sortOrders: [
-        {
-          field: 'id',
-          direction: 'ASC'
-        }
-      ],
-      pageSize,
-      currentPage
-    },
-    fields: 'items[id,sku,name,status,custom_attributes]'
-  };
-
-  const products = await magento.getProducts(params);
+  const products = await magento.getProductsByType(attributeSetId, pageSize, currentPage);
 
   if (!cached && products) {
     cache.set(arguments, products);
@@ -75,23 +41,7 @@ async function getProductBySku(sku) {
     return cached;
   }
 
-  const params = {
-    searchCriteria: {
-      filter_groups: [
-        {
-          filters: [
-            {
-              field: 'sku',
-              value: sku,
-              condition_type: 'eq'
-            }
-          ]
-        },
-      ],
-    },
-  };
-
-  const products = await magento.getProducts(params);
+  const products = await magento.getProductsBySku(sku);
   const product = products[0];
 
   if (!cached && product) {

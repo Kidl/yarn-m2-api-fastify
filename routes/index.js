@@ -20,7 +20,7 @@ async function routes (fastify, options) {
         minimum: 0,
       },
     },
-    //preHandler: checkAccess,
+    preHandler: checkAccess,
     handler: async (request, reply) => {
       return await magento.getProductsByType(request.params.productType, request.query.currentPage);
     },
@@ -37,7 +37,7 @@ async function routes (fastify, options) {
         },
       },
     },
-    //preHandler: checkAccess,
+    preHandler: checkAccess,
     handler: async (request, reply) => {
       return await magento.getProductBySku(request.params.sku);
     },
@@ -46,7 +46,7 @@ async function routes (fastify, options) {
   fastify.route({
     method: 'DELETE',
     url: '/cache/all',
-    //preHandler: checkAccess,
+    preHandler: checkAccess,
     handler: async (request, reply) => {
       return await cache.deleteAll();
     },
@@ -63,7 +63,7 @@ async function routes (fastify, options) {
         },
       },
     },
-    //preHandler: checkAccess,
+    preHandler: checkAccess,
     handler: async (request, reply) => {
       const key = cache.getKey(magento.getProductBySku, [request.params.sku]);
       return await cache.del(null, key);

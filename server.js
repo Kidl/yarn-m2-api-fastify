@@ -1,6 +1,6 @@
 const environmentVariables = require('dotenv').config().parsed;
 const checkEnvNotEmpty = require('./lib/checkEnvNotEmpty');
-//checkEnvNotEmpty(environmentVariables);
+checkEnvNotEmpty(environmentVariables);
 
 const fastify = require('fastify')({logger: false});
 const routes = require('./routes');
