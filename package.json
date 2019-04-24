@@ -1,14 +1,29 @@
 {
   "name": "yarn-m2-api-fastify",
   "version": "0.0.1",
+  "private": true,
   "main": "server.js",
   "author": "Vladislav Sevostyanov <vs@kidl.no>",
+  "scripts": {
+    "start": "node server",
+    "dev": "nodemon server",
+    "lint": "eslint -c .eslintrc.js --ext .js --ignore-path .gitignore .",
+    "lint:fix": "eslint -c .eslintrc.js --fix --ext .js --ignore-path .gitignore ."
+  },
   "dependencies": {
     "@kidl.no/express-auth-middleware": "^0.0.6",
     "axios": "^0.18.0",
     "dotenv": "^7.0.0",
     "fastify": "^2.1.0",
+    "fastify-healthcheck": "^2.0.0",
     "ioredis": "^4.9.0",
     "slack-notify": "^0.1.7"
+  },
+  "devDependencies": {
+    "eslint": "^5.16.0",
+    "eslint-config-airbnb-base": "^13.1.0",
+    "eslint-plugin-import": "^2.17.2",
+    "eslint-plugin-node": "^8.0.1",
+    "nodemon": "^1.18.11"
   }
 }
