@@ -2,7 +2,7 @@ const environmentVariables = require('dotenv').config().parsed;
 const checkEnvNotEmpty = require('./lib/checkEnvNotEmpty');
 checkEnvNotEmpty(environmentVariables);
 
-const fastify = require('fastify')({logger: false});
+const fastify = require('fastify')({logger: true});
 const routes = require('./routes');
 const slackNotify = require('./lib/slackNotify');
 
