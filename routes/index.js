@@ -22,7 +22,13 @@ async function routes (fastify, options) {
     },
     preHandler: checkAccess,
     handler: async (request, reply) => {
-      return await magento.getProductsByType(request.params.productType, request.query.currentPage);
+      let discount = 0;
+
+      if (request.req && request.req.user && request.req.user.options && request.req.user.options.discount) {
+        discount = request.req.user.options.discount;
+      }
+
+      return await magento.getProductsByType(request.params.productType, request.query.currentPage, discount);
     },
   });
 
@@ -39,7 +45,23 @@ async function routes (fastify, options) {
     },
     preHandler: checkAccess,
     handler: async (request, reply) => {
-      return await magento.getProductBySku(request.params.sku);
+      return await magento.getConfigurableProductBySku(request.params.sku);
+    },
+  });
+
+  fastify.route({
+    method: 'GET',
+    url: '/attribute/:name/:id',
+    schema: {
+      params: {
+        sku: {
+          type: 'string',
+        },
+      },
+    },
+    preHandler: checkAccess,
+    handler: async (request, reply) => {
+      return await magento.getAttributeValue(request.params.name, request.params.id);
     },
   });
 
