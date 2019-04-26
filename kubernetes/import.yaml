@@ -1,0 +1,39 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: yarn-m2-products-api
+spec:
+  selector:
+    app: yarn-m2-products-api
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 3000
+  type: ClusterIP
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: yarn-m2-products-api
+  labels:
+    app: yarn-m2-products-api
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: yarn-m2-products-api
+  template:
+    metadata:
+      labels:
+        app: yarn-m2-products-api
+    spec:
+      containers:
+        - name: yarn-m2-products-api
+          image: kidl/yarn-m2-api-fastify
+          ports:
+            - containerPort: 3000
+          envFrom:
+            - secretRef:
+                name: yarn-m2-products-api
+      imagePullSecrets:
+        - name: docker-cloud-credentials

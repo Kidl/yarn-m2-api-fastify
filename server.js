@@ -1,16 +1,17 @@
 const environmentVariables = require('dotenv').config().parsed;
+const fastify = require('fastify')({ logger: true });
 const checkEnvNotEmpty = require('./lib/checkEnvNotEmpty');
-checkEnvNotEmpty(environmentVariables);
-
-const fastify = require('fastify')({logger: true});
 const routes = require('./routes');
 const slackNotify = require('./lib/slackNotify');
 
+checkEnvNotEmpty(environmentVariables);
+
+fastify.register(require('fastify-healthcheck'), { healthcheckUrl: '/healthcheck' });
 fastify.register(routes);
 
 (async () => {
   try {
-    await fastify.listen(3000);
+    await fastify.listen(process.env.PORT);
   } catch (err) {
     fastify.log.error(err);
 

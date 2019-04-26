@@ -2,22 +2,22 @@ const checkAccess = require('../middleware/checkAccess');
 const magento = require('../controllers/magento');
 const cache = require('../lib/cache');
 
-async function routes (fastify, options) {
+async function routes(fastify, options) {
   fastify.route({
     method: 'GET',
-    url: '/type/:productType',
+    url: '/products/type/:productType',
     schema: {
       params: {
         productType: {
           type: 'string',
-          enum: ['yarn', 'needles'],
+          enum: Object.keys(JSON.parse(process.env.ATTRIBUTE_SETS)),
         },
       },
     },
     querystring: {
       currentPage: {
         type: 'integer',
-        minimum: 0,
+        minimum: 1,
       },
     },
     preHandler: checkAccess,
@@ -28,30 +28,22 @@ async function routes (fastify, options) {
         discount = request.req.user.options.discount;
       }
 
-      return await magento.getProductsByType(request.params.productType, request.query.currentPage, discount);
+      const currentPage =  request.query.currentPage ? request.query.currentPage : 1;
+
+      return await magento.getProductsByType(request.params.productType, currentPage, discount);
     },
   });
 
   fastify.route({
     method: 'GET',
-    url: '/:sku',
-    schema: {
-      params: {
-        sku: {
-          type: 'string',
-          pattern: '^\\d{3}-\\d{2,6}\\w{0,2}$'
-        },
-      },
-    },
+    url: '/products/:sku',
     preHandler: checkAccess,
-    handler: async (request, reply) => {
-      return await magento.getConfigurableProductBySku(request.params.sku);
-    },
+    handler: async (request, reply) => await magento.getConfigurableProductBySku(request.params.sku),
   });
 
   fastify.route({
     method: 'GET',
-    url: '/attribute/:name/:id',
+    url: '/products/attribute/:name/:id',
     schema: {
       params: {
         sku: {
@@ -60,28 +52,24 @@ async function routes (fastify, options) {
       },
     },
     preHandler: checkAccess,
-    handler: async (request, reply) => {
-      return await magento.getAttributeValue(request.params.name, request.params.id);
-    },
+    handler: async (request, reply) => await magento.getAttributeValue(request.params.name, request.params.id),
   });
 
   fastify.route({
     method: 'DELETE',
-    url: '/cache/all',
+    url: '/products/cache/all',
     preHandler: checkAccess,
-    handler: async (request, reply) => {
-      return await cache.deleteAll();
-    },
+    handler: async (request, reply) => await cache.deleteAll(),
   });
 
   fastify.route({
     method: 'DELETE',
-    url: '/cache/:sku',
+    url: '/products/cache/:sku',
     schema: {
       params: {
         sku: {
           type: 'string',
-          pattern: '^\\d{3}-\\d{2,6}\\w{0,2}$'
+          pattern: '^\\d{3}-\\d{2,6}\\w{0,2}$',
         },
       },
     },
