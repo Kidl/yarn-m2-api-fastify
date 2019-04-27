@@ -4,7 +4,11 @@ const checkEnvNotEmpty = require('./lib/checkEnvNotEmpty');
 const routes = require('./routes');
 const slackNotify = require('./lib/slackNotify');
 
-checkEnvNotEmpty(environmentVariables);
+if(environmentVariables !== undefined){
+    checkEnvNotEmpty(environmentVariables);
+}else{
+    console.log('Run application without .env');
+}
 
 fastify.register(require('fastify-healthcheck'), { healthcheckUrl: '/healthcheck' });
 fastify.register(routes);
