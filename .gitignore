@@ -1,3 +1,7 @@
 .idea
 /node_modules/
-/.env
+.env
+.env.dev
+.env.stage
+.env.prod
+secrets.tar
