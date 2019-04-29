@@ -8,6 +8,10 @@ env:
   - REPO=${TRAVIS_REPO_SLUG,,}
   - IMAGE=$REPO:${TRAVIS_COMMIT:0:8}
   - CONTAINER_NAME=yarn-m2-products-api
+branches:
+  - dev
+  - stage
+  - prod
 cache:
   directories:
   - node_modules
