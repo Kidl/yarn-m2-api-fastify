@@ -1,0 +1,14 @@
+.git
+.idea
+.editorconfig
+.env.template
+.eslintignore
+.eslintrc.js
+yarn.lock
+yarn-error.log
+package-lock.json
+README.md
+kubernetes
+test
+.npmrc
+.gcloudignore

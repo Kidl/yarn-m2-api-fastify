@@ -2,7 +2,7 @@ FROM node:10.15.0
 
 ENV NODE_ENV production
 ENV PORT 3000
-ENV SERVICE_NAME m2-api
+ENV SERVICE_NAME m2-products-api
 ENV JWT_SECRET ''
 ENV MEDIA_URL ''
 ENV MAGENTO_API_URL ''
@@ -20,4 +20,4 @@ COPY . /app
 
 EXPOSE 3000
 
-CMD [ "npm", "start" ]
+ENTRYPOINT ["./entrypoint.sh"]
