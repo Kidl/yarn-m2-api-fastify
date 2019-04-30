@@ -3,7 +3,7 @@ env=( NODE_ENV PORT SERVICE_NAME JWT_SECRET MEDIA_URL MAGENTO_API_URL MAGENTO_AC
 
 for i in "${env[@]}"
 do
-printf $i=${!i} >> .env
+echo $i=${!i} >> .env
 done
 
 cat .env
