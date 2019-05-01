@@ -6,6 +6,4 @@ do
 echo $i=${!i} >> .env
 done
 
-cat .env
-
 npm run start
