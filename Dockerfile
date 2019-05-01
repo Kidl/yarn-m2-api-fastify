@@ -1,6 +1,7 @@
 FROM node:10.15.0
 
 ENV NODE_ENV production
+ENV HOST 0.0.0.0
 ENV PORT 3000
 ENV SERVICE_NAME m2-products-api
 ENV JWT_SECRET ''
