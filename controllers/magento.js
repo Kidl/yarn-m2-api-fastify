@@ -5,11 +5,15 @@ const getAttributeSetId = require('../lib/getAttributeSetId');
 async function getProductsByType(productType, currentPage, discount) {
   const cached = await cache.get(arguments);
 
+  console.log('productType', productType);
+  console.log('attributeSetId', getAttributeSetId(productType));
+
   if (cached) {
     return cached;
   }
 
-  const attributeSetId = getAttributeSetId(productType);
+
+    const attributeSetId = getAttributeSetId(productType);
 
   // ensure attributes cached
   await getAttributes();

@@ -11,7 +11,7 @@
     "lint:fix": "eslint -c .eslintrc.js --fix --ext .js --ignore-path .gitignore ."
   },
   "dependencies": {
-    "@kidl.no/express-auth-middleware": "^0.0.6",
+    "@kidl.no/express-auth-middleware": "0.0.9",
     "axios": "^0.18.0",
     "dotenv": "^7.0.0",
     "fastify": "^2.1.0",
@@ -24,6 +24,6 @@
     "eslint-config-airbnb-base": "^13.1.0",
     "eslint-plugin-import": "^2.17.2",
     "eslint-plugin-node": "^8.0.1",
-    "nodemon": "^1.18.11"
+    "nodemon": "1.19.0"
   }
 }

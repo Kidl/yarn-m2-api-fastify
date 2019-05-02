@@ -18,10 +18,10 @@
     esutils "^2.0.2"
     js-tokens "^4.0.0"
 
-"@kidl.no/express-auth-middleware@^0.0.6":
-  version "0.0.6"
-  resolved "https://registry.yarnpkg.com/@kidl.no/express-auth-middleware/-/express-auth-middleware-0.0.6.tgz#8dc858d81b2b51eea9149cb66e7e1ce2d8542a86"
-  integrity sha512-371alCnA4ejddl3VKTRsDKAWW1xWBeEOxXf0B6Irp8pMyy2jkaGLnkqr6tS2r714hHZRaBzNiEEvzgEafZ46dg==
+"@kidl.no/express-auth-middleware@0.0.9":
+  version "0.0.9"
+  resolved "https://registry.yarnpkg.com/@kidl.no/express-auth-middleware/-/express-auth-middleware-0.0.9.tgz#d3d2ad41e3de905c1480c32d9c80693928801a8f"
+  integrity sha512-6uX8jqaWdxAKNNJEL2BmG+zZ/66mYpNGtMaoSuyh4OOSIDbGOiFZOxVv3LhF+Xz0DtOTlJCzPb/G357QJttllA==
   dependencies:
     dotenv "^7.0.0"
     jsonwebtoken "^8.5.0"
@@ -2039,10 +2039,10 @@ node-pre-gyp@^0.12.0:
     semver "^5.3.0"
     tar "^4"
 
-nodemon@^1.18.11:
-  version "1.18.11"
-  resolved "https://registry.yarnpkg.com/nodemon/-/nodemon-1.18.11.tgz#d836ab663776e7995570b963da5bfc807e53f6b8"
-  integrity sha512-KdN3tm1zkarlqNo4+W9raU3ihM4H15MVMSE/f9rYDZmFgDHAfAJsomYrHhApAkuUemYjFyEeXlpCOQ2v5gtBEw==
+nodemon@1.19.0:
+  version "1.19.0"
+  resolved "https://registry.yarnpkg.com/nodemon/-/nodemon-1.19.0.tgz#358e005549a1e9e1148cb2b9b8b28957dc4e4527"
+  integrity sha512-NHKpb/Je0Urmwi3QPDHlYuFY9m1vaVfTsRZG5X73rY46xPj0JpNe8WhUGQdkDXQDOxrBNIU3JrcflE9Y44EcuA==
   dependencies:
     chokidar "^2.1.5"
     debug "^3.1.0"
