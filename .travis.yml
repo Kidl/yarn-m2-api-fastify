@@ -22,7 +22,6 @@ before_install:
 - export PATH=/home/travis/google-cloud-sdk/bin:$PATH
 install:
 - echo "//registry.npmjs.org/:_authToken=\${NPM_TOKEN}" > .npmrc
-- npm install -g npm@latest
 - npm install
 - npm audit fix
 - gcloud components install kubectl --quiet
