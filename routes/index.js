@@ -1,4 +1,4 @@
-const checkAccess = require('../middleware/checkAccess');
+const checkAccess = require('@kidl.no/express-auth-middleware')();
 const magento = require('../controllers/magento');
 const cache = require('../lib/cache');
 
@@ -24,8 +24,8 @@ async function routes(fastify, options) {
     handler: async (request, reply) => {
       let discount = 0;
 
-      if (request.req && request.req.user && request.req.user.options && request.req.user.options.discount) {
-        discount = request.req.user.options.discount;
+      if (request.user && request.user.options && request.user.options.discount) {
+        discount = request.user.options.discount;
       }
 
       const currentPage =  request.query.currentPage ? request.query.currentPage : 1;
