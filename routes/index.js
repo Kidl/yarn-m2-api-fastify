@@ -10,7 +10,7 @@ async function routes(fastify, options) {
       params: {
         productType: {
           type: 'string',
-          enum: Object.keys(JSON.parse(process.env.ATTRIBUTE_SETS)),
+          enum: Object.values(JSON.parse(process.env.ATTRIBUTE_SETS)),
         },
       },
     },
@@ -30,7 +30,10 @@ async function routes(fastify, options) {
 
       const currentPage =  request.query.currentPage ? request.query.currentPage : 1;
 
-      return await magento.getProductsByType(request.params.productType, currentPage, discount);
+      let products = await magento.getProductsByType(request.params.productType, currentPage);
+      products = magento.addDiscount(products, discount);
+
+      return products;
     },
   });
 
@@ -38,7 +41,18 @@ async function routes(fastify, options) {
     method: 'GET',
     url: '/products/:sku',
     preHandler: checkAccess,
-    handler: async (request, reply) => await magento.getConfigurableProductBySku(request.params.sku),
+    handler: async (request, reply) => {
+      let discount = 0;
+
+      if (request.user && request.user.options && request.user.options.discount) {
+        discount = request.user.options.discount;
+      }
+
+      let product = await magento.getProductBySku(request.params.sku);
+      product = magento.addDiscount(product, discount);
+
+      return product;
+    },
   });
 
   fastify.route({
