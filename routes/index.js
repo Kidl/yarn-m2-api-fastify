@@ -20,7 +20,7 @@ async function routes(fastify, options) {
         minimum: 1,
       },
     },
-    //preHandler: checkAccess,
+    preHandler: checkAccess,
     handler: async (request, reply) => {
       let discount = 0;
 
@@ -40,7 +40,7 @@ async function routes(fastify, options) {
   fastify.route({
     method: 'GET',
     url: '/products/:sku',
-    //preHandler: checkAccess,
+    preHandler: checkAccess,
     handler: async (request, reply) => {
       let discount = 0;
 
@@ -65,14 +65,14 @@ async function routes(fastify, options) {
         },
       },
     },
-    //preHandler: checkAccess,
+    preHandler: checkAccess,
     handler: async (request, reply) => await magento.getAttributeValue(request.params.name, request.params.id),
   });
 
   fastify.route({
     method: 'DELETE',
     url: '/products/cache/all',
-    //preHandler: checkAccess,
+    preHandler: checkAccess,
     handler: async (request, reply) => await cache.deleteAll(),
   });
 
@@ -87,7 +87,7 @@ async function routes(fastify, options) {
         },
       },
     },
-    //preHandler: checkAccess,
+    preHandler: checkAccess,
     handler: async (request, reply) => {
       const key = cache.getKey(magento.getProductBySku, [request.params.sku]);
       return await cache.del(null, key);
