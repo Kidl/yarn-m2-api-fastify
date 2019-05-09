@@ -1,6 +1,6 @@
 const magento = require('../lib/api/magento');
 const cache = require('../lib/cache');
-const getAttributeSetId = require('../lib/getAttributeSetId');
+const attributeSet = require('../lib/attributeSet');
 
 async function getProductsByType(productType, currentPage) {
   const cached = await cache.get(arguments);
@@ -9,7 +9,7 @@ async function getProductsByType(productType, currentPage) {
     return cached;
   }
 
-  const attributeSetId = getAttributeSetId(productType);
+  const attributeSetId = attributeSet.getId(productType);
 
   // ensure attributes cached
   await getAttributes();
@@ -91,7 +91,6 @@ async function structureProductYarn(product, productItems) {
 }
 
 async function structureProductNeedles(product, productItems) {
-
   return {
     sku: product.sku,
     enabled: !!product.status,
@@ -168,8 +167,6 @@ async function getProductBySku(sku) {
     return cached;
   }
 
-  const ATTRIBUTE_SETS = JSON.parse(process.env.ATTRIBUTE_SETS);
-
   const product = await magento.getProductBySku(sku);
 
   let productChildren;
@@ -180,9 +177,7 @@ async function getProductBySku(sku) {
     productChildren = await getConfigurableProductBySku(product.sku);
   }
 
-  const productType = ATTRIBUTE_SETS[product.attribute_set_id];
-
-  let structuredProduct = await structureProducts(productType, [product], [productChildren]);
+  let structuredProduct = await structureProducts(attributeSet.getType(product.attribute_set_id), [product], [productChildren]);
 
   structuredProduct = structuredProduct[0];
 
