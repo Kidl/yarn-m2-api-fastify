@@ -2,39 +2,34 @@ const magento = require('../lib/api/magento');
 const cache = require('../lib/cache');
 const getAttributeSetId = require('../lib/getAttributeSetId');
 
-async function getProductsByType(productType, currentPage, discount) {
+async function getProductsByType(productType, currentPage) {
   const cached = await cache.get(arguments);
-
-  console.log('productType', productType);
-  console.log('attributeSetId', getAttributeSetId(productType));
 
   if (cached) {
     return cached;
   }
 
-
-    const attributeSetId = getAttributeSetId(productType);
+  const attributeSetId = getAttributeSetId(productType);
 
   // ensure attributes cached
   await getAttributes();
 
-  const res = await magento.getProductsByType(attributeSetId, process.env.PRODUCTS_PAGE_SIZE, currentPage);
+  let products = await magento.getProductsByType(attributeSetId, process.env.PRODUCTS_PAGE_SIZE, currentPage);
+  products = products.products;
 
-  const getConfigurableProducts = res.products.map(product => getConfigurableProductBySku(product.sku));
+  const getConfigurableProducts = products.map(product => getConfigurableProductBySku(product.sku));
   const configurableProducts = await Promise.all(getConfigurableProducts);
 
-  products = await structureProducts(productType, res.products, configurableProducts, discount);
+  products = await structureProducts(productType, products, configurableProducts);
 
-  res.products = products;
-
-  if (!cached && res) {
-    cache.set(arguments, res);
+  if (!cached && products) {
+    cache.set(arguments, products);
   }
 
-  return res;
+  return products;
 }
 
-async function structureProducts(productType, products, configurableProducts, discount) {
+async function structureProducts(productType, products, configurableProducts) {
   const result = [];
 
   for (let i = 0; i < products.length; i++) {
@@ -42,7 +37,7 @@ async function structureProducts(productType, products, configurableProducts, di
     const productItems = configurableProducts[i];
 
     const structuredProduct = productType === 'yarn'
-      ? await structureProductYarn(product, productItems, discount) : await structureProductNeedles(product, productItems, discount);
+      ? await structureProductYarn(product, productItems) : await structureProductNeedles(product, productItems);
 
     result.push(structuredProduct);
   }
@@ -50,7 +45,7 @@ async function structureProducts(productType, products, configurableProducts, di
   return Promise.all(result);
 }
 
-async function structureProductYarn(product, productItems, discount) {
+async function structureProductYarn(product, productItems) {
   return {
     sku: product.sku,
     enabled: !!product.status,
@@ -62,7 +57,7 @@ async function structureProductYarn(product, productItems, discount) {
     gauge_stockinette: !!getAttributeIdLocal('gauge_stockinette'),
     fiber_content: await getAttributeValueMultiple('fiber_content', getAttributeIdLocal('fiber_content')),
     fabric_care: await getAttributeValueMultiple('fabric_care', getAttributeIdLocal('fabric_care', product)),
-    country: getAttributeIdLocal('country_of_manufacture'),
+    country: getAttributeIdLocal('country_of_manufacture', product),
     items: await structureProductItems(productItems),
   };
 
@@ -73,8 +68,6 @@ async function structureProductYarn(product, productItems, discount) {
   }
 
   async function structureProductItem(productItem) {
-    discount = +discount || 0;
-
     return {
       sku: productItem.sku,
       enabled: !!productItem.status,
@@ -82,7 +75,7 @@ async function structureProductYarn(product, productItems, discount) {
       color_tint_code: getAttributeIdLocal('color_tint_code'),
       color_tint: await getAttributeValue('color_tint', getAttributeIdLocal('color_tint')),
       price: productItem.price,
-      price_merchant: productItem.price * (100 - discount) / 100,
+      price_merchant: productItem.price,
       image: {
         swatch: process.env.MEDIA_URL + getAttributeIdLocal('swatch_image', productItem),
         base: process.env.MEDIA_URL + getAttributeIdLocal('image', productItem),
@@ -97,7 +90,7 @@ async function structureProductYarn(product, productItems, discount) {
   }
 }
 
-async function structureProductNeedles(product, productItems, discount) {
+async function structureProductNeedles(product, productItems) {
 
   return {
     sku: product.sku,
@@ -117,8 +110,6 @@ async function structureProductNeedles(product, productItems, discount) {
   }
 
   async function structureProductItem(productItem) {
-    discount = +discount || 0;
-
     return {
       sku: productItem.sku,
       enabled: !!productItem.status,
@@ -127,7 +118,7 @@ async function structureProductNeedles(product, productItems, discount) {
       length: await getAttributeValue('needle_length', getAttributeIdLocal('needle_length', productItem)),
       weight: getAttributeIdLocal('weight', productItem),
       price: productItem.price,
-      price_merchant: productItem.price * (100 - discount) / 100,
+      price_merchant: productItem.price,
       image: {
         swatch: process.env.MEDIA_URL + getAttributeIdLocal('thumbnail', productItem),
         base: process.env.MEDIA_URL + getAttributeIdLocal('image', productItem),
@@ -168,6 +159,44 @@ async function getConfigurableProductBySku(sku) {
   }
 
   return product;
+}
+
+async function getProductBySku(sku) {
+  const cached = await cache.get(arguments);
+
+  if (cached) {
+    return cached;
+  }
+
+  const ATTRIBUTE_SETS = JSON.parse(process.env.ATTRIBUTE_SETS);
+
+  const product = await magento.getProductBySku(sku);
+
+  let productChildren;
+
+  if (product.type_id === 'simple') {
+    productChildren = [product];
+  } else {
+    productChildren = await getConfigurableProductBySku(product.sku);
+  }
+
+  const productType = ATTRIBUTE_SETS[product.attribute_set_id];
+
+  let structuredProduct = await structureProducts(productType, [product], [productChildren]);
+
+  structuredProduct = structuredProduct[0];
+
+  if (product.type_id === 'simple') {
+    structuredProduct = Object.assign(structuredProduct, structuredProduct.items[0]);
+
+    delete structuredProduct.items;
+  }
+
+  if (!cached && structuredProduct) {
+    cache.set(arguments, structuredProduct);
+  }
+
+  return structuredProduct;
 }
 
 async function getAttributesByName(attributeName) {
@@ -269,8 +298,32 @@ async function getAttributeValueMultiple(attributeName, attributeIds) {
   return result;
 }
 
+function addDiscount(products, discount) {
+  discount = discount || 0;
+
+  if (Array.isArray(products) === false) {
+    products = [products];
+  }
+
+  for (let i = 0; i < products.length; i++) {
+    const product = products[i];
+
+    if (product && product.price) {
+      product.price_merchant = product.price * (100 - discount) / 100;
+    }
+
+    if (product && product.items) {
+      product.items = addDiscount(product.items, discount);
+    }
+  }
+
+  return products.length === 1 ? products[0] : products;
+}
+
 module.exports = {
   getProductsByType,
+  getProductBySku,
   getConfigurableProductBySku,
   getAttributeValue,
+  addDiscount,
 };
