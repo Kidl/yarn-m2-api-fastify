@@ -1,6 +1,7 @@
 const checkAccess = require('@kidl.no/express-auth-middleware')();
 const magento = require('../controllers/magento');
 const cache = require('../lib/cache');
+const attributeSet = require('../lib/attributeSet');
 
 async function routes(fastify, options) {
   fastify.route({
@@ -10,7 +11,7 @@ async function routes(fastify, options) {
       params: {
         productType: {
           type: 'string',
-          enum: Object.values(JSON.parse(process.env.ATTRIBUTE_SETS)),
+          enum: Object.keys(attributeSet.str2obj(process.env.ATTRIBUTE_SETS)),
         },
       },
     },
@@ -28,7 +29,7 @@ async function routes(fastify, options) {
         discount = request.user.options.discount;
       }
 
-      const currentPage =  request.query.currentPage ? request.query.currentPage : 1;
+      const currentPage = request.query.currentPage ? request.query.currentPage : 1;
 
       let products = await magento.getProductsByType(request.params.productType, currentPage);
       products = magento.addDiscount(products, discount);
