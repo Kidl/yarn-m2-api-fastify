@@ -3,6 +3,50 @@ const magento = require('../controllers/magento');
 const cache = require('../lib/cache');
 
 async function routes(fastify, options) {
+  /** @swagger
+    "/products/type/{productType}": {
+      "get":  {
+        "tags": [
+          "products"
+        ],
+        "summary": "getProductsByType",
+        "description": "Find products by productType",
+        "operationId": "getProductsByType",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "productType",
+            "in": "path",
+            "description": "Type of products to return",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "currentPage",
+            "in": "query",
+            "description": "Paging",
+            "required": false,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad request"
+          }
+        },
+        "security": [
+          {
+            "jwt": ["apiKey"]
+          }
+        ]
+      }
+    }
+  */
   fastify.route({
     method: 'GET',
     url: '/products/type/:productType',
@@ -34,6 +78,43 @@ async function routes(fastify, options) {
     },
   });
 
+  /** @swagger
+    "/products/{sku}": {
+      "get":  {
+        "tags": [
+          "products"
+        ],
+        "summary": "getConfigurableProductBySku",
+        "description": "Find product by sku",
+        "operationId": "getConfigurableProductBySku",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "sku",
+            "in": "path",
+            "description": "sku of product to return",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad request"
+          }
+        },
+        "security": [
+          {
+            "jwt": ["apiKey"]
+          }
+        ]
+      }
+    }
+  */
   fastify.route({
     method: 'GET',
     url: '/products/:sku',
@@ -41,6 +122,50 @@ async function routes(fastify, options) {
     handler: async (request, reply) => await magento.getConfigurableProductBySku(request.params.sku),
   });
 
+  /** @swagger
+    "/products/attribute/{name}/{id}": {
+      "get":  {
+        "tags": [
+          "products"
+        ],
+        "summary": "getAttributeValue",
+        "description": "getAttributeValue",
+        "operationId": "getAttributeValue",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "name",
+            "in": "path",
+            "description": "name",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "id",
+            "in": "path",
+            "description": "id",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad request"
+          }
+        },
+        "security": [
+          {
+            "jwt": ["apiKey"]
+          }
+        ]
+      }
+    }
+  */
   fastify.route({
     method: 'GET',
     url: '/products/attribute/:name/:id',
@@ -55,6 +180,31 @@ async function routes(fastify, options) {
     handler: async (request, reply) => await magento.getAttributeValue(request.params.name, request.params.id),
   });
 
+  /** @swagger
+    "/products/cache/all": {
+      "delete": {
+        "tags": [
+          "cache"
+        ],
+        "summary": "deleteAll",
+        "description": "Delete all the cache",
+        "operationId": "deleteAll",
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "security": [
+          {
+            "jwt": ["apiKey"]
+          }
+        ]
+      }
+    }
+  */
   fastify.route({
     method: 'DELETE',
     url: '/products/cache/all',
@@ -62,6 +212,44 @@ async function routes(fastify, options) {
     handler: async (request, reply) => await cache.deleteAll(),
   });
 
+
+  /** @swagger
+    "/products/cache/{sku}": {
+      "delete": {
+        "tags": [
+          "cache"
+        ],
+        "summary": "del",
+        "description": "Deletes product cache by sku",
+        "operationId": "del",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "sku",
+            "in": "path",
+            "description": "sku of product cache to delete",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad request"
+          }
+        },
+        "security": [
+          {
+            "jwt": ["apiKey"]
+          }
+        ]
+      }
+    }
+  */
   fastify.route({
     method: 'DELETE',
     url: '/products/cache/:sku',

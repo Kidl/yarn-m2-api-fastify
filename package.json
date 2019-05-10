@@ -8,7 +8,8 @@
     "start": "node server",
     "dev": "nodemon server",
     "lint": "eslint -c .eslintrc.js --ext .js --ignore-path .gitignore .",
-    "lint:fix": "eslint -c .eslintrc.js --fix --ext .js --ignore-path .gitignore ."
+    "lint:fix": "eslint -c .eslintrc.js --fix --ext .js --ignore-path .gitignore .",
+    "doc": "swagger-jsdoc -d swagger.js ./routes/index.js"
   },
   "dependencies": {
     "@kidl.no/express-auth-middleware": "0.0.11",
@@ -24,6 +25,8 @@
     "eslint-config-airbnb-base": "^13.1.0",
     "eslint-plugin-import": "^2.17.2",
     "eslint-plugin-node": "^9.0.0",
-    "nodemon": "1.19.0"
+    "nodemon": "1.19.0",
+    "redoc-cli": "^0.8.3",
+    "swagger-jsdoc": "^3.2.9"
   }
 }
