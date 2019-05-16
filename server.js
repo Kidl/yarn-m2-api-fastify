@@ -3,6 +3,7 @@ const fastify = require('fastify')({ logger: true });
 const checkEnvNotEmpty = require('./lib/checkEnvNotEmpty');
 const routes = require('./routes');
 const slackNotify = require('./lib/slackNotify');
+const GoogleAnalyticsTracker = require('@kidl.no/google-analytics-tracking');
 
 const host = process.env.HOST || '127.0.0.1';
 
@@ -12,8 +13,11 @@ if (environmentVariables !== undefined) {
   console.log('Run application without .env');
 }
 
+const track = new GoogleAnalyticsTracker(process.env.GA_TRACKING_ID, process.env.SERVICE_NAME, console.error);
+
 fastify.register(require('fastify-healthcheck'), { healthcheckUrl: '/healthcheck' });
 
+fastify.use(track);
 fastify.register(routes);
 
 (async () => {
