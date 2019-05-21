@@ -177,7 +177,11 @@ async function getProductBySku(sku) {
     productChildren = await getConfigurableProductBySku(product.sku);
   }
 
-  let structuredProduct = await structureProducts(attributeSet.getType(product.attribute_set_id), [product], [productChildren]);
+  let structuredProduct = await structureProducts(
+    attributeSet.getType(product.attribute_set_id),
+    [product],
+    [productChildren],
+  );
 
   structuredProduct = structuredProduct[0];
 

@@ -1,9 +1,13 @@
+'use strict';
+
+/* eslint-disable no-process-exit */
+
 const environmentVariables = require('dotenv').config().parsed;
 const fastify = require('fastify')({ logger: true });
+const GoogleAnalyticsTracker = require('@kidl.no/google-analytics-tracking');
 const checkEnvNotEmpty = require('./lib/checkEnvNotEmpty');
 const routes = require('./routes');
 const slackNotify = require('./lib/slackNotify');
-const GoogleAnalyticsTracker = require('@kidl.no/google-analytics-tracking');
 
 const host = process.env.HOST || '127.0.0.1';
 
