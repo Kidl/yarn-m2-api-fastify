@@ -24,5 +24,10 @@ module.exports = {
     'no-restricted-globals': 1,
     'guard-for-in': 1,
     'no-await-in-loop': 1,
+    'strict': 0,
+    'no-return-await': 1,
+    'no-unused-vars': ['error', { 'argsIgnorePattern': 'request|reply|options' }],
+    'prefer-destructuring': 1,
+    'prefer-rest-params': 0,
   },
 };

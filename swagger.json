@@ -13,9 +13,20 @@
   "schemes": [
     "http"
   ],
+  "securityDefinitions": {
+    "jwt": {
+      "type": "apiKey",
+      "name": "x-access-token",
+      "in": "header"
+    }
+  },
+  "externalDocs": {
+    "description": "Find out more about service",
+    "url": "https://kidlno.atlassian.net/wiki/spaces/HY/pages/24838147/Microservices+Woolit"
+  },
   "paths": {
-    "/type/{productType}": {
-      "get":  {
+    "/products/type/{productType}": {
+      "get": {
         "tags": [
           "products"
         ],
@@ -51,19 +62,21 @@
         },
         "security": [
           {
-            "jwt": ["apiKey"]
+            "jwt": [
+              "apiKey"
+            ]
           }
         ]
       }
     },
-    "/{sku}": {
-      "get":  {
+    "/products/{sku}": {
+      "get": {
         "tags": [
           "products"
         ],
-        "summary": "getProductBySku",
+        "summary": "getConfigurableProductBySku",
         "description": "Find product by sku",
-        "operationId": "getProductBySku",
+        "operationId": "getConfigurableProductBySku",
         "produces": [
           "application/json"
         ],
@@ -86,12 +99,58 @@
         },
         "security": [
           {
-            "jwt": ["apiKey"]
+            "jwt": [
+              "apiKey"
+            ]
           }
         ]
       }
     },
-    "/cache/all": {
+    "/products/attribute/{name}/{id}": {
+      "get": {
+        "tags": [
+          "products"
+        ],
+        "summary": "getAttributeValue",
+        "description": "getAttributeValue",
+        "operationId": "getAttributeValue",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "name",
+            "in": "path",
+            "description": "name",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "id",
+            "in": "path",
+            "description": "id",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad request"
+          }
+        },
+        "security": [
+          {
+            "jwt": [
+              "apiKey"
+            ]
+          }
+        ]
+      }
+    },
+    "/products/cache/all": {
       "delete": {
         "tags": [
           "cache"
@@ -109,12 +168,14 @@
         },
         "security": [
           {
-            "jwt": ["apiKey"]
+            "jwt": [
+              "apiKey"
+            ]
           }
         ]
       }
     },
-    "/cache/{sku}": {
+    "/products/cache/{sku}": {
       "delete": {
         "tags": [
           "cache"
@@ -144,21 +205,16 @@
         },
         "security": [
           {
-            "jwt": ["apiKey"]
+            "jwt": [
+              "apiKey"
+            ]
           }
         ]
       }
     }
   },
-  "securityDefinitions": {
-    "jwt": {
-      "type": "apiKey",
-      "name": "x-access-token",
-      "in": "header"
-    }
-  },
-  "externalDocs": {
-    "description": "Find out more about service",
-    "url": "https://kidlno.atlassian.net/wiki/spaces/HY/pages/24838147/Microservices+Woolit"
-  }
+  "definitions": {},
+  "responses": {},
+  "parameters": {},
+  "tags": []
 }
