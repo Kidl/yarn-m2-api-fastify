@@ -48,7 +48,7 @@ async function structureProducts(productType, products, configurableProducts) {
 async function structureProductYarn(product, productItems) {
   return {
     sku: product.sku,
-    enabled: !!product.status,
+    enabled: product.status === 1,
     name: product.name,
     brand: await getAttributeValue('brand', getAttributeIdLocal('brand')),
     weight: product.weight,
@@ -70,10 +70,10 @@ async function structureProductYarn(product, productItems) {
   async function structureProductItem(productItem) {
     return {
       sku: productItem.sku,
-      enabled: !!productItem.status,
+      enabled: productItem.status === 1,
       name: productItem.name,
-      color_tint_code: getAttributeIdLocal('color_tint_code'),
-      color_tint: await getAttributeValue('color_tint', getAttributeIdLocal('color_tint')),
+      color_tint_code: getAttributeIdLocal('color_tint_code', productItem),
+      color_tint: await getAttributeValue('color_tint', getAttributeIdLocal('color_tint', productItem)),
       price: productItem.price,
       price_merchant: productItem.price,
       image: {
@@ -93,7 +93,7 @@ async function structureProductYarn(product, productItems) {
 async function structureProductNeedles(product, productItems) {
   return {
     sku: product.sku,
-    enabled: !!product.status,
+    enabled: product.status === 1,
     name: product.name,
     brand: await getAttributeValue('brand', getAttributeIdLocal('brand')),
     weight: product.weight,
@@ -111,7 +111,7 @@ async function structureProductNeedles(product, productItems) {
   async function structureProductItem(productItem) {
     return {
       sku: productItem.sku,
-      enabled: !!productItem.status,
+      enabled: productItem.status === 1,
       name: productItem.name,
       thickness: await getAttributeValue('thickness', getAttributeIdLocal('thickness', productItem)),
       length: await getAttributeValue('needle_length', getAttributeIdLocal('needle_length', productItem)),
@@ -177,7 +177,11 @@ async function getProductBySku(sku) {
     productChildren = await getConfigurableProductBySku(product.sku);
   }
 
-  let structuredProduct = await structureProducts(attributeSet.getType(product.attribute_set_id), [product], [productChildren]);
+  let structuredProduct = await structureProducts(
+    attributeSet.getType(product.attribute_set_id),
+    [product],
+    [productChildren],
+  );
 
   structuredProduct = structuredProduct[0];
 
