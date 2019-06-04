@@ -9,11 +9,11 @@
     "dev": "nodemon server",
     "lint": "eslint -c .eslintrc.js --ext .js --ignore-path .gitignore .",
     "lint:fix": "eslint -c .eslintrc.js --fix --ext .js --ignore-path .gitignore .",
-    "doc": "swagger-jsdoc -d swagger.js ./routes/index.js"
+    "doc": "swagger-jsdoc -d swagger.js ./routes/index.js && redoc-cli bundle swagger.json"
   },
   "dependencies": {
     "@kidl.no/express-auth-middleware": "0.0.11",
-    "@kidl.no/google-analytics-tracking": "^0.0.2",
+    "@kidl.no/google-analytics-tracking": "0.1.2",
     "axios": "^0.18.0",
     "dotenv": "^8.0.0",
     "fastify": "^2.3.0",

@@ -2,7 +2,7 @@ module.exports = {
   swagger: '2.0',
   info: {
     description: 'yarn-m2-api-fastify service',
-    version: '0.0.1',
+    version: '1.0.2',
     title: 'yarn-m2-api-fastify',
     contact: {
       email: 'system@kidl.no',

@@ -73,10 +73,10 @@
     dotenv "^8.0.0"
     jsonwebtoken "^8.5.0"
 
-"@kidl.no/google-analytics-tracking@^0.0.2":
-  version "0.0.2"
-  resolved "https://registry.yarnpkg.com/@kidl.no/google-analytics-tracking/-/google-analytics-tracking-0.0.2.tgz#4b0344a32a7a68c8ca4aa238be4091d0b0d1fbfe"
-  integrity sha512-sJV5rK7LdV/HJCf4H5nuIV9oDGmtRutx0/10GyThrOOIEXODXd31ezV8PBaXYT1jFsGyrcZBDHM0YqusPWN2Sg==
+"@kidl.no/google-analytics-tracking@0.1.2":
+  version "0.1.2"
+  resolved "https://registry.yarnpkg.com/@kidl.no/google-analytics-tracking/-/google-analytics-tracking-0.1.2.tgz#9ec0d8fe50e42ff88aa3fbd4b83f6402c45940b6"
+  integrity sha512-70NqV2YGP2O6Ly+HZLE1zPwj2nM8rRFzQg0ffwEXNqFC/iQSMdk6sHvhtbOioGkf0Io+2iP9vpILW84QwuC21g==
   dependencies:
     fastify "^2.3.0"
     universal-analytics "^0.4.20"
