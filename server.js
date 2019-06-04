@@ -3,7 +3,7 @@
 /* eslint-disable no-process-exit */
 
 const environmentVariables = require('dotenv').config().parsed;
-const fastify = require('fastify')({ logger: true });
+const fastify = require('fastify')({ logger: process.env.LOGGER });
 const GoogleAnalyticsTracker = require('@kidl.no/google-analytics-tracking');
 const checkEnvNotEmpty = require('./lib/checkEnvNotEmpty');
 const routes = require('./routes');
