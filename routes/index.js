@@ -1,6 +1,7 @@
 const checkAccess = require('@kidl.no/express-auth-middleware')();
 const magento = require('../controllers/magento');
 const cache = require('../lib/cache');
+const attributeSet = require('../lib/attributeSet');
 
 async function routes(fastify, options) {
   /** @swagger
@@ -59,7 +60,7 @@ async function routes(fastify, options) {
       params: {
         productType: {
           type: 'string',
-          enum: Object.values(JSON.parse(process.env.ATTRIBUTE_SETS)),
+            enum: Object.keys(attributeSet.str2obj(process.env.ATTRIBUTE_SETS)),
         },
       },
     },
@@ -72,12 +73,6 @@ async function routes(fastify, options) {
     preHandler: checkAccess,
     handler: async (request, reply) => {
       let discount = 0;
-
-      request.user = {
-        options: {
-          discount: 0
-        }
-      };
 
       if (request.user && request.user.options && request.user.options.discount) {
         discount = request.user.options.discount;
