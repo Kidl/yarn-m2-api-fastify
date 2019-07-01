@@ -9,7 +9,7 @@ async function getProductsByType(productType, currentPage) {
     return cached;
   }
 
-  const attributeSetId = attributeSet.getId(productType);
+  const attributeSetId = attributeSet.getIdByName(productType);
 
   // ensure attributes cached
   await getAttributes();
@@ -178,7 +178,7 @@ async function getProductBySku(sku) {
   }
 
   let structuredProduct = await structureProducts(
-    attributeSet.getType(product.attribute_set_id),
+    attributeSet.getNameById(product.attribute_set_id),
     [product],
     [productChildren],
   );
