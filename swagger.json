@@ -2,7 +2,7 @@
   "swagger": "2.0",
   "info": {
     "description": "yarn-m2-api-fastify service",
-    "version": "0.0.1",
+    "version": "1.0.2",
     "title": "yarn-m2-api-fastify",
     "contact": {
       "email": "system@kidl.no"
@@ -18,6 +18,91 @@
       "type": "apiKey",
       "name": "x-access-token",
       "in": "header"
+    }
+  },
+  "definitions": {
+    "schemas": {
+      "NeedlesItem": {
+        "type": "object",
+        "properties": {
+          "sku": {
+            "type": "string",
+            "example": "100-35911"
+          },
+          "enabled": {
+            "type": "boolean",
+            "example": true
+          },
+          "name": {
+            "type": "string",
+            "example": "Basix Birch, 60 cm, 15.0 mm - Rundpinner i bjørk"
+          },
+          "thickness": {
+            "type": "string",
+            "example": "15"
+          },
+          "length": {
+            "type": "string",
+            "example": "60"
+          },
+          "price": {
+            "type": "number",
+            "example": 91
+          },
+          "price_merchant": {
+            "type": "number",
+            "example": 91
+          },
+          "image": {
+            "type": "object",
+            "properties": {
+              "swatch": {
+                "type": "string",
+                "example": "https://stage-hofy.kidl.no/media/catalog/product/1/0/100-35911_kp_basix_bj_rk_rundpinne_60cm__15mm.jpg"
+              },
+              "base": {
+                "type": "string",
+                "example": "https://stage-hofy.kidl.no/media/catalog/product/1/0/100-35911_kp_basix_bj_rk_rundpinne_60cm__15mm.jpg"
+              }
+            }
+          }
+        }
+      },
+      "Needles": {
+        "type": "object",
+        "properties": {
+          "sku": {
+            "type": "string",
+            "example": "Basix Birch - Rundpinner"
+          },
+          "enabled": {
+            "type": "boolean",
+            "example": true
+          },
+          "name": {
+            "type": "string",
+            "example": "Rundpinner"
+          },
+          "brand": {
+            "type": "string",
+            "example": "Basix Birch"
+          },
+          "material": {
+            "type": "string",
+            "example": "Bjørk"
+          },
+          "color": {
+            "type": "string",
+            "example": "Natur"
+          },
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/definitions/schemas/NeedlesItem"
+            }
+          }
+        }
+      }
     }
   },
   "externalDocs": {
@@ -54,7 +139,12 @@
         ],
         "responses": {
           "200": {
-            "description": "OK"
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/schemas/Needles"
+              }
+            }
           },
           "400": {
             "description": "Bad request"
@@ -91,7 +181,9 @@
         ],
         "responses": {
           "200": {
-            "description": "OK"
+            "schema": {
+              "$ref": "#/definitions/schemas/NeedlesItem"
+            }
           },
           "400": {
             "description": "Bad request"
@@ -163,7 +255,17 @@
         ],
         "responses": {
           "200": {
-            "description": "OK"
+            "examples": {
+              "applicatins/json": [
+                "getAttributeValue[\"thickness\",\"9051\"]",
+                "getAttributeValue[\"brand\",\"9371\"]",
+                "getAttributes[]",
+                "getConfigurableProductBySku[\"Basix Birch - Parpinner\"]",
+                "getAttributesByName[\"needle_length\"]",
+                "getAttributeValue[\"thickness\",\"479\"]",
+                "getAttributeValue[\"thickness\",\"475\"]"
+              ]
+            }
           }
         },
         "security": [
@@ -197,7 +299,11 @@
         ],
         "responses": {
           "200": {
-            "description": "OK"
+            "examples": {
+              "application/json": [
+                "getProductBySku[\"Gjestal - Vestlandsgarn\"]"
+              ]
+            }
           },
           "400": {
             "description": "Bad request"
@@ -213,7 +319,6 @@
       }
     }
   },
-  "definitions": {},
   "responses": {},
   "parameters": {},
   "tags": []
