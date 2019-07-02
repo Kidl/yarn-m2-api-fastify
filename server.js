@@ -19,6 +19,7 @@ if (environmentVariables !== undefined) {
 
 const track = new GoogleAnalyticsTracker(process.env.GA_TRACKING_ID, process.env.SERVICE_NAME, console.error);
 
+fastify.register(require('fastify-static'), { root: __dirname });
 fastify.register(require('fastify-healthcheck'), { healthcheckUrl: '/healthcheck' });
 
 fastify.use(track);

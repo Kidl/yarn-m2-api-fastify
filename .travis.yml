@@ -27,7 +27,8 @@ install:
 - gcloud components install kubectl --quiet
 - chmod +x ./*.sh
 script: true
-before_deploy: true
+before_deploy:
+- npm run doc
 deploy:
   provider: script
   skip_cleanup: true
