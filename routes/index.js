@@ -302,6 +302,11 @@ async function routes(fastify, options) {
       return await cache.del(null, key);
     },
   });
+
+    fastify.get('/doc', function (req, reply) {
+        reply.sendFile('redoc-static.html');
+    })
+
 }
 
 module.exports = routes;
