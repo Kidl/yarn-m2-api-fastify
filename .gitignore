@@ -5,3 +5,4 @@
 .env.stage
 .env.prod
 secrets.tar
+redoc-static.html
