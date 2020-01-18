@@ -13,9 +13,9 @@
     "heroku-prebuild": "bash sh/env.sh",
     "heroku-postbuild": "npm run doc"
   },
- "engines" : {
-   "node" : ">=0.11.1"
- },
+  "engines": {
+    "node": ">=11.11.0"
+  },
   "dependencies": {
     "@kidl.no/express-auth-middleware": "^0.0.14",
     "@kidl.no/google-analytics-tracking": "0.1.2",

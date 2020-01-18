@@ -5,4 +5,6 @@
 .env.stage
 .env.prod
 secrets.tar
+swagger.json
 redoc-static.html
+.npmrc
