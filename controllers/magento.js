@@ -9,7 +9,7 @@ async function getProductsByType(productType, currentPage) {
     return cached;
   }
 
-    const attributeSetId = attributeSet.getId(productType);
+  const attributeSetId = attributeSet.getId(productType);
 
   // ensure attributes cached
   await getAttributes();

@@ -1,0 +1,13 @@
+kubernetes
+.dockerignore
+.env.*
+.eslintrc.js
+.eslintignore
+.gcloudignore
+.gitignore
+.travis.yml
+deploy.sh
+Dockerfile
+entrypoint.sh
+README.md
+secrets.tar.enc

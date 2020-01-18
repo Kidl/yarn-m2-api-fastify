@@ -9,8 +9,13 @@
     "dev": "nodemon server",
     "lint": "eslint -c .eslintrc.js --ext .js --ignore-path .gitignore .",
     "lint:fix": "eslint -c .eslintrc.js --fix --ext .js --ignore-path .gitignore .",
-    "doc": "swagger-jsdoc -d swagger.js ./routes/index.js && redoc-cli bundle swagger.json"
+    "doc": "swagger-jsdoc -d swagger.js ./routes/index.js && redoc-cli bundle swagger.json",
+    "heroku-prebuild": "bash sh/env.sh",
+    "heroku-postbuild": "npm run doc"
   },
+ "engines" : {
+   "node" : ">=0.11.1"
+ },
   "dependencies": {
     "@kidl.no/express-auth-middleware": "^0.0.14",
     "@kidl.no/google-analytics-tracking": "0.1.2",

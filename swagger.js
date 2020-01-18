@@ -58,10 +58,12 @@ module.exports = {
             properties: {
               swatch: {
                 type: 'string',
+                // eslint-disable-next-line max-len
                 example: 'https://stage-hofy.kidl.no/media/catalog/product/1/0/100-35911_kp_basix_bj_rk_rundpinne_60cm__15mm.jpg',
               },
               base: {
                 type: 'string',
+                // eslint-disable-next-line max-len
                 example: 'https://stage-hofy.kidl.no/media/catalog/product/1/0/100-35911_kp_basix_bj_rk_rundpinne_60cm__15mm.jpg',
               },
             },
@@ -103,7 +105,7 @@ module.exports = {
           },
         },
       },
-    }
+    },
   },
   externalDocs: {
     description: 'Find out more about service',
