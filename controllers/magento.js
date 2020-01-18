@@ -23,7 +23,7 @@ async function getProductsByType(productType, currentPage) {
   products = await structureProducts(productType, products, configurableProducts);
 
   if (!cached && products) {
-    cache.set(arguments, products);
+    cache.set(arguments, products, 86400);
   }
 
   return products;
@@ -192,7 +192,7 @@ async function getProductBySku(sku) {
   }
 
   if (!cached && structuredProduct) {
-    cache.set(arguments, structuredProduct);
+    cache.set(arguments, structuredProduct, 86400);
   }
 
   return structuredProduct;
