@@ -23,7 +23,7 @@ async function getProductsByType(productType, currentPage) {
   products = await structureProducts(productType, products, configurableProducts);
 
   if (!cached && products) {
-    cache.set(arguments, products, 86400);
+    cache.set(arguments, products);
   }
 
   return products;
@@ -164,13 +164,8 @@ async function getProductBySku(sku) {
   const cached = await cache.get(arguments);
 
   if (cached) {
-    console.log('cached : ' + sku);
     return cached;
-  }else{
-    console.log('not cached : ' + sku);
-
   }
-
   const product = await magento.getProductBySku(sku);
 
   let productChildren;
@@ -181,13 +176,13 @@ async function getProductBySku(sku) {
     productChildren = await getConfigurableProductBySku(product.sku);
   }
 
-  let structuredProduct = await structureProducts(
+    let structuredProduct = await structureProducts(
     attributeSet.getType(product.attribute_set_id),
     [product],
     [productChildren],
   );
 
-  structuredProduct = structuredProduct[0];
+    structuredProduct = structuredProduct[0];
 
   if (product.type_id === 'simple') {
     structuredProduct = Object.assign(structuredProduct, structuredProduct.items[0]);
@@ -196,10 +191,10 @@ async function getProductBySku(sku) {
   }
 
   if (!cached && structuredProduct) {
-    cache.set(arguments, structuredProduct, 86400);
+    cache.set(arguments, structuredProduct);
   }
 
-  return structuredProduct;
+    return structuredProduct;
 }
 
 async function getAttributesByName(attributeName) {
