@@ -164,7 +164,11 @@ async function getProductBySku(sku) {
   const cached = await cache.get(arguments);
 
   if (cached) {
+    console.log('cached : ' + sku);
     return cached;
+  }else{
+    console.log('not cached : ' + sku);
+
   }
 
   const product = await magento.getProductBySku(sku);
