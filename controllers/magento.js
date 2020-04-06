@@ -39,8 +39,10 @@ async function structureProducts(productType, products, configurableProducts) {
     const structuredProduct = productType === 'yarn'
       ? await structureProductYarn(product, productItems) : await structureProductNeedles(product, productItems);
 
+    console.log(6666666);
     result.push(structuredProduct);
   }
+  console.log(2323);
 
   return Promise.all(result);
 }
@@ -91,6 +93,8 @@ async function structureProductYarn(product, productItems) {
 }
 
 async function structureProductNeedles(product, productItems) {
+
+  console.log('getAttributeIdLocal(\'material\')', getAttributeIdLocal('material'));
   return {
     sku: product.sku,
     enabled: product.status === 1,
@@ -170,8 +174,10 @@ async function getProductBySku(sku) {
     console.log('not cached : ' + sku);
 
   }
+    console.log(1111);
 
   const product = await magento.getProductBySku(sku);
+    console.log(2222);
 
   let productChildren;
 
@@ -181,25 +187,32 @@ async function getProductBySku(sku) {
     productChildren = await getConfigurableProductBySku(product.sku);
   }
 
-  let structuredProduct = await structureProducts(
+    console.log(3333);
+
+    let structuredProduct = await structureProducts(
     attributeSet.getType(product.attribute_set_id),
     [product],
     [productChildren],
   );
 
-  structuredProduct = structuredProduct[0];
+    console.log(4444);
+
+    structuredProduct = structuredProduct[0];
 
   if (product.type_id === 'simple') {
     structuredProduct = Object.assign(structuredProduct, structuredProduct.items[0]);
 
     delete structuredProduct.items;
   }
+    console.log(55555);
 
   if (!cached && structuredProduct) {
     cache.set(arguments, structuredProduct, 86400);
   }
 
-  return structuredProduct;
+    console.log(6666);
+
+    return structuredProduct;
 }
 
 async function getAttributesByName(attributeName) {
@@ -236,12 +249,24 @@ async function getAttributes() {
 }
 
 async function getAttributeValue(attributeName, attributeId) {
-  const cached = await cache.get(arguments);
 
-  if (cached) {
-    return cached;
+  console.log('arguments: ', arguments);
+
+  let  cached = false;
+  try {
+//  cached = await cache.get(arguments);
+  }catch (e) {
+    console.log('EEERRROR');
+    console.error(e);
   }
 
+  if (cached) {
+    console.log('getAttributeValue cached ' +attributeName );
+    return cached;
+  }else {
+    console.log('getAttributeValue not cached ' +attributeName );
+  }
+  console.log(2222111111);
   const attributes = await getAttributesByName(attributeName);
 
   let attributeValue;
@@ -255,10 +280,16 @@ async function getAttributeValue(attributeName, attributeId) {
       break;
     }
   }
+    console.log(22221133333);
 
   if (!cached && attributeValue) {
-    cache.set(arguments, attributeValue);
+    try {
+      cache.set(arguments, attributeValue);
+    }catch (e) {
+      cosnole.error('EEEE', e);
+    }
   }
+    console.log(2222114444);
 
   return attributeValue || false;
 }

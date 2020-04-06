@@ -70,7 +70,7 @@ async function routes(fastify, options) {
         minimum: 1,
       },
     },
-    preHandler: checkAccess,
+    // preHandler: checkAccess,
     handler: async (request, reply) => {
       let discount = 0;
 
@@ -79,6 +79,7 @@ async function routes(fastify, options) {
       }
 
       const currentPage = request.query.currentPage ? request.query.currentPage : 1;
+
 
       let products = await magento.getProductsByType(request.params.productType, currentPage);
       products = magento.addDiscount(products, discount);
@@ -129,7 +130,7 @@ async function routes(fastify, options) {
   fastify.route({
     method: 'GET',
     url: '/products/:sku',
-    preHandler: checkAccess,
+    // preHandler: checkAccess,
     handler: async (request, reply) => {
       let discount = 0;
 
@@ -240,7 +241,7 @@ async function routes(fastify, options) {
   fastify.route({
     method: 'DELETE',
     url: '/products/cache/all',
-    preHandler: checkAccess,
+   // preHandler: checkAccess,
     handler: async (request, reply) => await cache.deleteAll(),
   });
 
