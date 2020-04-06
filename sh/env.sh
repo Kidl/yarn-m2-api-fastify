@@ -8,6 +8,6 @@ for i in "${env[@]}"
 do
 printf $i=${!i} >> .env
 done
-rm -rf .env
 
+echo 'PRINT ENV'
 printenv
