@@ -9,5 +9,4 @@ do
 printf $i=${!i} >> .env
 done
 
-echo 'PRINT ENV'
-printenv
+rm -rf .env
