@@ -39,10 +39,8 @@ async function structureProducts(productType, products, configurableProducts) {
     const structuredProduct = productType === 'yarn'
       ? await structureProductYarn(product, productItems) : await structureProductNeedles(product, productItems);
 
-    console.log(6666666);
     result.push(structuredProduct);
   }
-  console.log(2323);
 
   return Promise.all(result);
 }
@@ -93,8 +91,6 @@ async function structureProductYarn(product, productItems) {
 }
 
 async function structureProductNeedles(product, productItems) {
-
-  console.log('getAttributeIdLocal(\'material\')', getAttributeIdLocal('material'));
   return {
     sku: product.sku,
     enabled: product.status === 1,
@@ -249,24 +245,12 @@ async function getAttributes() {
 }
 
 async function getAttributeValue(attributeName, attributeId) {
-
-  console.log('arguments: ', arguments);
-
-  let  cached = false;
-  try {
-//  cached = await cache.get(arguments);
-  }catch (e) {
-    console.log('EEERRROR');
-    console.error(e);
-  }
+  const cached = await cache.get(arguments);
 
   if (cached) {
-    console.log('getAttributeValue cached ' +attributeName );
     return cached;
-  }else {
-    console.log('getAttributeValue not cached ' +attributeName );
   }
-  console.log(2222111111);
+
   const attributes = await getAttributesByName(attributeName);
 
   let attributeValue;
@@ -280,16 +264,10 @@ async function getAttributeValue(attributeName, attributeId) {
       break;
     }
   }
-    console.log(22221133333);
 
   if (!cached && attributeValue) {
-    try {
-      cache.set(arguments, attributeValue);
-    }catch (e) {
-      cosnole.error('EEEE', e);
-    }
+    cache.set(arguments, attributeValue);
   }
-    console.log(2222114444);
 
   return attributeValue || false;
 }
