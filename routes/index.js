@@ -129,8 +129,10 @@ async function routes(fastify, options) {
   fastify.route({
     method: 'GET',
     url: '/products/:sku',
-    preHandler: checkAccess,
+    // preHandler: checkAccess,
     handler: async (request, reply) => {
+
+        console.log('request.params.sku : ', request.params.sku);
       let discount = 0;
 
       if (request.user && request.user.options && request.user.options.discount) {

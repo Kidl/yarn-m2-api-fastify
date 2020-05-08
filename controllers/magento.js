@@ -58,13 +58,16 @@ async function structureProductYarn(product, productItems) {
     fiber_content: await getAttributeValueMultiple('fiber_content', getAttributeIdLocal('fiber_content')),
     fabric_care: await getAttributeValueMultiple('fabric_care', getAttributeIdLocal('fabric_care', product)),
     country: getAttributeIdLocal('country_of_manufacture', product),
-    items: await structureProductItems(productItems),
+    items: productItems ? await structureProductItems(productItems) : [],
   };
 
   async function structureProductItems(productItems) {
-    productItems = productItems.map(productItem => structureProductItem(productItem));
+    if(productItems) {
+      productItems = productItems.map(productItem => structureProductItem(productItem));
 
-    return Promise.all(productItems);
+      return Promise.all(productItems);
+    }
+    return [];
   }
 
   async function structureProductItem(productItem) {
@@ -99,13 +102,16 @@ async function structureProductNeedles(product, productItems) {
     weight: product.weight,
     material: await getAttributeValue('material', getAttributeIdLocal('material')),
     color: await getAttributeValue('color', getAttributeIdLocal('color')),
-    items: await structureProductItems(productItems),
+    items: productItems ? await structureProductItems(productItems) : [],
   };
 
   async function structureProductItems(productItems) {
+    if(productItems){
     productItems = productItems.map(productItem => structureProductItem(productItem));
 
     return Promise.all(productItems);
+    }
+    return [];
   }
 
   async function structureProductItem(productItem) {
@@ -133,7 +139,7 @@ async function structureProductNeedles(product, productItems) {
 }
 
 function getAttributeId(attributeName, context) {
-  const attributes = context.custom_attributes || [];
+  const attributes = context ? context.custom_attributes : [];
 
   for (let i = 0; i < attributes.length; i++) {
     const attribute = attributes[i];
