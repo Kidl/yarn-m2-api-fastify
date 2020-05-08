@@ -62,9 +62,12 @@ async function structureProductYarn(product, productItems) {
   };
 
   async function structureProductItems(productItems) {
-    productItems = productItems.map(productItem => structureProductItem(productItem));
+    if(productItems) {
+      productItems = productItems.map(productItem => structureProductItem(productItem));
 
-    return Promise.all(productItems);
+      return Promise.all(productItems);
+    }
+    return [];
   }
 
   async function structureProductItem(productItem) {
@@ -103,9 +106,12 @@ async function structureProductNeedles(product, productItems) {
   };
 
   async function structureProductItems(productItems) {
+    if(productItems){
     productItems = productItems.map(productItem => structureProductItem(productItem));
 
     return Promise.all(productItems);
+    }
+    return [];
   }
 
   async function structureProductItem(productItem) {
