@@ -35,13 +35,15 @@ async function structureProducts(productType, products, configurableProducts) {
   for (let i = 0; i < products.length; i++) {
     const product = products[i];
     const productItems = configurableProducts[i];
-
-    const structuredProduct = productType === 'yarn'
+    
+    if (product && productItems) {
+      const structuredProduct = productType === 'yarn'
       ? structureProductYarn(product, productItems) : structureProductNeedles(product, productItems);
 
-    result.push(structuredProduct);
+      result.push(structuredProduct);
+    }
   }
-
+    
   return Promise.all(result);
 }
 
