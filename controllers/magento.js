@@ -15,7 +15,6 @@ async function getProductsByType(productType, currentPage) {
   await getAttributes();
 
   let products = await magento.getProductsByType(attributeSetId, process.env.PRODUCTS_PAGE_SIZE, currentPage);
-  products = products.products;
 
   const getConfigurableProducts = products.map(product => getConfigurableProductBySku(product.sku));
   const configurableProducts = await Promise.all(getConfigurableProducts);
