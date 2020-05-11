@@ -15,6 +15,7 @@ async function getProductsByType(productType, currentPage) {
   await getAttributes();
 
   let products = await magento.getProductsByType(attributeSetId, process.env.PRODUCTS_PAGE_SIZE, currentPage);
+  products = products.products;
 
   const getConfigurableProducts = products.map(product => getConfigurableProductBySku(product.sku));
   const configurableProducts = await Promise.all(getConfigurableProducts);
@@ -36,7 +37,7 @@ async function structureProducts(productType, products, configurableProducts) {
     const productItems = configurableProducts[i];
 
     const structuredProduct = productType === 'yarn'
-      ? await structureProductYarn(product, productItems) : await structureProductNeedles(product, productItems);
+      ? structureProductYarn(product, productItems) : structureProductNeedles(product, productItems);
 
     result.push(structuredProduct);
   }
@@ -61,11 +62,12 @@ async function structureProductYarn(product, productItems) {
   };
 
   async function structureProductItems(productItems) {
-    if(productItems) {
+    if (productItems) {
       productItems = productItems.map(productItem => structureProductItem(productItem));
 
       return Promise.all(productItems);
     }
+
     return [];
   }
 
@@ -105,11 +107,11 @@ async function structureProductNeedles(product, productItems) {
   };
 
   async function structureProductItems(productItems) {
-    if(productItems){
-    productItems = productItems.map(productItem => structureProductItem(productItem));
-
-    return Promise.all(productItems);
+    if (productItems) {
+      productItems = productItems.map(productItem => structureProductItem(productItem));
+      return Promise.all(productItems);
     }
+
     return [];
   }
 
@@ -171,6 +173,7 @@ async function getProductBySku(sku) {
   if (cached) {
     return cached;
   }
+
   const product = await magento.getProductBySku(sku);
 
   let productChildren;
@@ -181,13 +184,13 @@ async function getProductBySku(sku) {
     productChildren = await getConfigurableProductBySku(product.sku);
   }
 
-    let structuredProduct = await structureProducts(
+  let structuredProduct = await structureProducts(
     attributeSet.getType(product.attribute_set_id),
     [product],
     [productChildren],
   );
 
-    structuredProduct = structuredProduct[0];
+  structuredProduct = structuredProduct[0];
 
   if (product.type_id === 'simple') {
     structuredProduct = Object.assign(structuredProduct, structuredProduct.items[0]);
@@ -199,7 +202,7 @@ async function getProductBySku(sku) {
     cache.set(arguments, structuredProduct);
   }
 
-    return structuredProduct;
+  return structuredProduct;
 }
 
 async function getAttributesByName(attributeName) {
