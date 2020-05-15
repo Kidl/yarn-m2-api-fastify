@@ -9,7 +9,7 @@ async function getProductsByType(productType, currentPage) {
     return cached;
   }
 
-    const attributeSetId = attributeSet.getId(productType);
+  const attributeSetId = attributeSet.getId(productType);
 
   // ensure attributes cached
   await getAttributes();
@@ -23,7 +23,7 @@ async function getProductsByType(productType, currentPage) {
   products = await structureProducts(productType, products, configurableProducts);
 
   if (!cached && products) {
-    cache.set(arguments, products, 86400);
+    cache.set(arguments, products);
   }
 
   return products;
@@ -35,13 +35,15 @@ async function structureProducts(productType, products, configurableProducts) {
   for (let i = 0; i < products.length; i++) {
     const product = products[i];
     const productItems = configurableProducts[i];
+    
+    if (product && productItems) {
+      const structuredProduct = productType === 'yarn'
+      ? structureProductYarn(product, productItems) : structureProductNeedles(product, productItems);
 
-    const structuredProduct = productType === 'yarn'
-      ? await structureProductYarn(product, productItems) : await structureProductNeedles(product, productItems);
-
-    result.push(structuredProduct);
+      result.push(structuredProduct);
+    }
   }
-
+    
   return Promise.all(result);
 }
 
@@ -58,13 +60,17 @@ async function structureProductYarn(product, productItems) {
     fiber_content: await getAttributeValueMultiple('fiber_content', getAttributeIdLocal('fiber_content')),
     fabric_care: await getAttributeValueMultiple('fabric_care', getAttributeIdLocal('fabric_care', product)),
     country: getAttributeIdLocal('country_of_manufacture', product),
-    items: await structureProductItems(productItems),
+    items: productItems ? await structureProductItems(productItems) : [],
   };
 
   async function structureProductItems(productItems) {
-    productItems = productItems.map(productItem => structureProductItem(productItem));
+    if (productItems) {
+      productItems = productItems.map(productItem => structureProductItem(productItem));
 
-    return Promise.all(productItems);
+      return Promise.all(productItems);
+    }
+
+    return [];
   }
 
   async function structureProductItem(productItem) {
@@ -99,13 +105,16 @@ async function structureProductNeedles(product, productItems) {
     weight: product.weight,
     material: await getAttributeValue('material', getAttributeIdLocal('material')),
     color: await getAttributeValue('color', getAttributeIdLocal('color')),
-    items: await structureProductItems(productItems),
+    items: productItems ? await structureProductItems(productItems) : [],
   };
 
   async function structureProductItems(productItems) {
-    productItems = productItems.map(productItem => structureProductItem(productItem));
+    if (productItems) {
+      productItems = productItems.map(productItem => structureProductItem(productItem));
+      return Promise.all(productItems);
+    }
 
-    return Promise.all(productItems);
+    return [];
   }
 
   async function structureProductItem(productItem) {
@@ -133,7 +142,7 @@ async function structureProductNeedles(product, productItems) {
 }
 
 function getAttributeId(attributeName, context) {
-  const attributes = context.custom_attributes || [];
+  const attributes = context ? context.custom_attributes : [];
 
   for (let i = 0; i < attributes.length; i++) {
     const attribute = attributes[i];
@@ -192,7 +201,7 @@ async function getProductBySku(sku) {
   }
 
   if (!cached && structuredProduct) {
-    cache.set(arguments, structuredProduct, 86400);
+    cache.set(arguments, structuredProduct);
   }
 
   return structuredProduct;

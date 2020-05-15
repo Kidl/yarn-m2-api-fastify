@@ -60,7 +60,7 @@ async function routes(fastify, options) {
       params: {
         productType: {
           type: 'string',
-            enum: Object.keys(attributeSet.str2obj(process.env.ATTRIBUTE_SETS)),
+          enum: Object.keys(attributeSet.str2obj(process.env.ATTRIBUTE_SETS)),
         },
       },
     },
@@ -129,8 +129,10 @@ async function routes(fastify, options) {
   fastify.route({
     method: 'GET',
     url: '/products/:sku',
-    preHandler: checkAccess,
+    // preHandler: checkAccess,
     handler: async (request, reply) => {
+
+        console.log('request.params.sku : ', request.params.sku);
       let discount = 0;
 
       if (request.user && request.user.options && request.user.options.discount) {
@@ -303,10 +305,9 @@ async function routes(fastify, options) {
     },
   });
 
-    fastify.get('/doc', function (req, reply) {
-        reply.sendFile('redoc-static.html');
-    })
-
+  fastify.get('/doc', (req, reply) => {
+    reply.sendFile('redoc-static.html');
+  });
 }
 
 module.exports = routes;

@@ -12,7 +12,9 @@ SERVICE_NAME=m2-api
 PORT=3000
 
 REDIS_HOST=127.0.0.1
+REDIS_URL=redis://...127.0.0.1...
 REDIS_KEY_PREFIX=m2-api:
+REDIS_EX=64800
 
 MEDIA_URL=https://stage-hofy.kidl.no/media/catalog/product
 
