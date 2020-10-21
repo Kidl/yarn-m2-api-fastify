@@ -4,7 +4,7 @@
 
 const environmentVariables = require('dotenv').config().parsed;
 const fastify = require('fastify')({ logger: process.env.LOGGER });
-const GoogleAnalyticsTracker = require('@kidl.no/google-analytics-tracking');
+const GoogleAnalyticsTracker = require('@kidl/google-analytics-tracking');
 const checkEnvNotEmpty = require('./lib/checkEnvNotEmpty');
 const routes = require('./routes');
 const slackNotify = require('./lib/slackNotify');
