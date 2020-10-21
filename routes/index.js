@@ -1,4 +1,4 @@
-const checkAccess = require('@kidl.no/express-auth-middleware')();
+const checkAccess = require('@kidl/express-auth-middleware')();
 const magento = require('../controllers/magento');
 const cache = require('../lib/cache');
 const attributeSet = require('../lib/attributeSet');
