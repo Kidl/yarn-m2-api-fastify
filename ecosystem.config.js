@@ -1,0 +1,30 @@
+module.exports = {
+  apps: [
+    {
+      name: 'yarn-m2-api-fastify',
+      script: 'yarn start',
+      env: {
+        ATTRIBUTE_SETS: process.env.ATTRIBUTE_SETS,
+        CACHE: process.env.CACHE,
+        CRYPTO_SECRET: process.env.CRYPTO_SECRET,
+        GA_TRACKING_ID: process.env.GA_TRACKING_ID,
+        HOST: process.env.HOST,
+        JWT_SECRET: process.env.JWT_SECRET,
+        LOGGER: process.env.LOGGER,
+        MAGENTO_ACCESS_TOKEN: process.env.MAGENTO_ACCESS_TOKEN,
+        MAGENTO_API_URL: process.env.MAGENTO_API_URL,
+        MEDIA_URL: process.env.MEDIA_URL,
+        NODE_ENV: process.env.NODE_ENV,
+        PORT: process.env.PORT,
+        PRODUCTS_PAGE_SIZE: process.env.PRODUCTS_PAGE_SIZE,
+        REDIS_EX: process.env.REDIS_EX,
+        REDIS_KEY_PREFIX: process.env.REDIS_KEY_PREFIX,
+        REDIS_URL: process.env.REDIS_URL,
+        SERVICE_NAME: process.env.SERVICE_NAME,
+        SLACK_CHANNEL: process.env.SLACK_CHANNEL,
+        SLACK_WEBHOOK_URL: process.env.SLACK_WEBHOOK_URL,
+        TZ: process.env.TZ,
+      },
+    },
+  ],
+};
