@@ -1,0 +1,47 @@
+
+name: Deploy
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: SSH and deploy node app
+      uses: appleboy/ssh-action@master
+      with:
+        host: ${{ secrets.SSH_HOST }}
+        username: ${{ secrets.SSH_USERNAME }}
+        key: ${{ secrets.SSH_KEY }}
+        port: ${{ secrets.SSH_PORT }}
+        script: |
+          export ATTRIBUTE_SETS=yarn:16,needles:17
+          export CACHE=true
+          export CRYPTO_SECRET=${{ secrets.CRYPTO_SECRET }}
+          export GA_TRACKING_ID=UA-107571707-4
+          export HOST=0.0.0.0
+          export JWT_SECRET=${{ secrets.JWT_SECRET }}
+          export LOGGER=true
+          export MAGENTO_ACCESS_TOKEN=${{ secrets.MAGENTO_ACCESS_TOKEN }}
+          export MAGENTO_API_URL=https://checkout.hoy.no
+          export MEDIA_URL=https://checkout.hoy.no/pub/media/catalog/product
+          export NODE_ENV=production
+          export PORT=3002
+          export PRODUCTS_PAGE_SIZE=20
+          export REDIS_EX=64800
+          export REDIS_KEY_PREFIX=m2-api:
+          export REDIS_URL=${{ secrets.REDIS_URL }}
+          export SERVICE_NAME=m2-products-api
+          export SLACK_CHANNEL=hoy_system_bot
+          export SLACK_WEBHOOK_URL=${{ secrets.SLACK_WEBHOOK_URL }}
+          export TZ=Europe/Oslo
+          cd ~/yarn-m2-api-fastify
+          git pull origin master
+          echo //registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }} > .npmrc
+          yarn install --production
+          pm2 delete ecosystem.config.js
+          pm2 start ecosystem.config.js
