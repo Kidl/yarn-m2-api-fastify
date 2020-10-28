@@ -39,7 +39,7 @@ jobs:
           export SLACK_CHANNEL=hoy_system_bot
           export SLACK_WEBHOOK_URL=${{ secrets.SLACK_WEBHOOK_URL }}
           export TZ=Europe/Oslo
-          cd ~/yarn-m2-api-fastify
+          cd ~/hofy/yarn-m2-api-fastify
           git pull origin master
           echo //registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }} > .npmrc
           yarn install --production
