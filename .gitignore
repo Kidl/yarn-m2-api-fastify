@@ -8,3 +8,5 @@ secrets.tar
 swagger.json
 redoc-static.html
 .npmrc
+
+*.config.js

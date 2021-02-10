@@ -20,7 +20,10 @@ jobs:
         port: ${{ secrets.SSH_PORT }}
         script: |
           cd ~/yarn-m2-api-fastify
+          git stash
           git pull -f origin master
-          echo //registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }} > .npmrc
+          echo //registry.npmjs.org/:_authToken=$NPM_TOKEN > .npmrc
           yarn install --production
-          pm2 restart hofy:hofy-m2-api-v1
+          yarn doc
+          pm2 reload hoy-b2c:hofy-m2-api
+          pm2 save

@@ -9,16 +9,14 @@
     "dev": "nodemon server",
     "lint": "eslint -c .eslintrc.js --ext .js --ignore-path .gitignore .",
     "lint:fix": "eslint -c .eslintrc.js --fix --ext .js --ignore-path .gitignore .",
-    "doc": "swagger-jsdoc -d swagger.js ./routes/index.js && redoc-cli bundle swagger.json",
-    "heroku-prebuild": "bash sh/env.sh",
-    "heroku-postbuild": "npm run doc"
+    "doc": "swagger-jsdoc -d swagger.js ./routes/index.js && redoc-cli bundle swagger.json"
   },
   "engines": {
     "node": ">=11.11.0"
   },
   "dependencies": {
-    "@kidl.no/express-auth-middleware": "^0.0.14",
-    "@kidl.no/google-analytics-tracking": "0.1.2",
+    "@kidl.no/express-auth-middleware": "github:Kidl/express-auth-middleware",
+    "@kidl.no/google-analytics-tracking": "github:Kidl/google-analytics-tracking",
     "axios": "^0.18.0",
     "dotenv": "^8.0.0",
     "fastify": "^2.3.0",
