@@ -34,3 +34,6 @@ GA_TRACKING_ID=UA-1 ...
 ## Start :tada:
 
 `yarn start`
+or
+`pm2 start`
+
