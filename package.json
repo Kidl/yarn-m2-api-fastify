@@ -23,15 +23,15 @@
     "fastify-healthcheck": "^2.0.0",
     "fastify-static": "^2.4.0",
     "ioredis": "^4.9.0",
-    "slack-notify": "^0.1.7"
+    "slack-notify": "^0.1.7",
+    "redoc-cli": "^0.8.3",
+    "swagger-jsdoc": "^3.2.9"
   },
   "devDependencies": {
     "eslint": "^5.16.0",
     "eslint-config-airbnb-base": "^13.1.0",
     "eslint-plugin-import": "^2.17.2",
     "eslint-plugin-node": "^9.0.0",
-    "nodemon": "1.19.0",
-    "redoc-cli": "^0.8.3",
-    "swagger-jsdoc": "^3.2.9"
+    "nodemon": "1.19.0"
   }
 }
