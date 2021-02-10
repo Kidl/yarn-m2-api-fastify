@@ -19,7 +19,7 @@ jobs:
         key: ${{ secrets.SSH_KEY }}
         port: ${{ secrets.SSH_PORT }}
         script: |
-          cd ~/yarn-m2-api-fastify
+          cd ${WWW_DIR}/yarn-m2-api-fastify
           git stash
           git pull -f origin master
           echo //registry.npmjs.org/:_authToken=$NPM_TOKEN > .npmrc
