@@ -305,7 +305,7 @@ async function routes(fastify, options) {
     },
   });
 
-  fastify.get('/doc', (req, reply) => {
+  fastify.get('/', (req, reply) => {
     reply.sendFile('redoc-static.html');
   });
 }
