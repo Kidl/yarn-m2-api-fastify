@@ -1,15 +1,17 @@
+const pkg = require('./package.json');
+
 module.exports = {
   swagger: '2.0',
   info: {
-    description: 'yarn-m2-api-fastify service',
-    version: '1.0.2',
+    description: pkg.description,
+    version: pkg.version,
     title: 'yarn-m2-api-fastify',
     contact: {
       email: 'system@kidl.no',
     },
   },
-  host: 'yarn-m2-api-fastify',
-  basePath: '/',
+  host: process.env.API_HOST,
+  basePath: process.env.BASE_PATH,
   schemes: [
     'http',
   ],

@@ -1,15 +1,12 @@
 {
   "swagger": "2.0",
   "info": {
-    "description": "yarn-m2-api-fastify service",
-    "version": "1.0.2",
+    "version": "0.0.1",
     "title": "yarn-m2-api-fastify",
     "contact": {
       "email": "system@kidl.no"
     }
   },
-  "host": "yarn-m2-api-fastify",
-  "basePath": "/",
   "schemes": [
     "http"
   ],
