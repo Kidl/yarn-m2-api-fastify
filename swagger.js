@@ -1,4 +1,5 @@
 const pkg = require('./package.json');
+require('dotenv').config();
 
 module.exports = {
   swagger: '2.0',
