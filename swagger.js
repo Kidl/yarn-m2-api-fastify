@@ -110,8 +110,8 @@ module.exports = {
       },
     },
   },
-  externalDocs: {
-    description: 'Find out more about service',
-    url: 'https://kidlno.atlassian.net/wiki/spaces/HY/pages/24838147/Microservices+Woolit',
-  },
+//  externalDocs: {
+//    description: 'Find out more about service',
+//    url: 'https://kidlno.atlassian.net/wiki/spaces/HY/pages/24838147/Microservices+Woolit',
+//  },
 };
