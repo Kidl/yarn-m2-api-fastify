@@ -25,5 +25,5 @@ jobs:
           echo //registry.npmjs.org/:_authToken=$NPM_TOKEN > .npmrc
           yarn install --production
           yarn doc
-          pm2 reload hoy-b2c:hofy-m2-api
+          pm2 reload hoy-b2c:live:v1:hofy-m2-api
           pm2 save
