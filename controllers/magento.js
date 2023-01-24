@@ -35,22 +35,25 @@ async function structureProducts(productType, products, configurableProducts) {
   for (let i = 0; i < products.length; i++) {
     const product = products[i];
     const productItems = configurableProducts[i];
-    
+
     if (product && productItems) {
       const structuredProduct = productType === 'yarn'
-      ? structureProductYarn(product, productItems) : structureProductNeedles(product, productItems);
+        ? structureProductYarn(product, productItems) : structureProductNeedles(product, productItems);
 
       result.push(structuredProduct);
     }
   }
-    
+
   return Promise.all(result);
 }
 
 async function structureProductYarn(product, productItems) {
+  const notForPartners = getAttributeIdLocal('not_for_partners', product);
+  const forceNotEnabled = notForPartners === '1';
+
   return {
     sku: product.sku,
-    enabled: product.status === 1,
+    enabled: product.status === 1 && !forceNotEnabled,
     name: product.name,
     brand: await getAttributeValue('brand', getAttributeIdLocal('brand')),
     weight: product.weight,
@@ -60,12 +63,12 @@ async function structureProductYarn(product, productItems) {
     fiber_content: await getAttributeValueMultiple('fiber_content', getAttributeIdLocal('fiber_content')),
     fabric_care: await getAttributeValueMultiple('fabric_care', getAttributeIdLocal('fabric_care', product)),
     country: getAttributeIdLocal('country_of_manufacture', product),
-    items: productItems ? await structureProductItems(productItems) : [],
+    items: productItems ? await structureProductItems(productItems, product.status !== 1 || forceNotEnabled) : [],
   };
 
-  async function structureProductItems(productItems) {
+  async function structureProductItems(productItems, forceNotEnabled = false) {
     if (productItems) {
-      productItems = productItems.map(productItem => structureProductItem(productItem));
+      productItems = productItems.map(productItem => structureProductItem(productItem, forceNotEnabled));
 
       return Promise.all(productItems);
     }
@@ -73,10 +76,12 @@ async function structureProductYarn(product, productItems) {
     return [];
   }
 
-  async function structureProductItem(productItem) {
+  async function structureProductItem(productItem, forceNotEnabled = false) {
+    const notForPartners = getAttributeIdLocal('not_for_partners', productItem);
+    const itemForceNotEnabled = notForPartners === '1' || forceNotEnabled;
     return {
       sku: productItem.sku,
-      enabled: productItem.status === 1,
+      enabled: productItem.status === 1 && !itemForceNotEnabled,
       name: productItem.name,
       color_tint_code: getAttributeIdLocal('color_tint_code', productItem),
       color_tint: await getAttributeValue('color_tint', getAttributeIdLocal('color_tint', productItem)),
@@ -97,30 +102,36 @@ async function structureProductYarn(product, productItems) {
 }
 
 async function structureProductNeedles(product, productItems) {
+  const notForPartners = getAttributeIdLocal('not_for_partners', product);
+  const forceNotEnabled = notForPartners === '1';
+
   return {
     sku: product.sku,
-    enabled: product.status === 1,
+    enabled: product.status === 1 && !forceNotEnabled,
     name: product.name,
     brand: await getAttributeValue('brand', getAttributeIdLocal('brand')),
     weight: product.weight,
     material: await getAttributeValue('material', getAttributeIdLocal('material')),
     color: await getAttributeValue('color', getAttributeIdLocal('color')),
-    items: productItems ? await structureProductItems(productItems) : [],
+    items: productItems ? await structureProductItems(productItems, product.status !== 1 || forceNotEnabled) : [],
   };
 
-  async function structureProductItems(productItems) {
+  async function structureProductItems(productItems, forceNotEnabled) {
     if (productItems) {
-      productItems = productItems.map(productItem => structureProductItem(productItem));
+      productItems = productItems.map(productItem => structureProductItem(productItem, forceNotEnabled));
       return Promise.all(productItems);
     }
 
     return [];
   }
 
-  async function structureProductItem(productItem) {
+  async function structureProductItem(productItem, forceNotEnabled = false) {
+    const notForPartners = getAttributeIdLocal('not_for_partners', productItem);
+    const itemForceNotEnabled = notForPartners === '1' || forceNotEnabled;
+
     return {
       sku: productItem.sku,
-      enabled: productItem.status === 1,
+      enabled: productItem.status === 1 && !itemForceNotEnabled,
       name: productItem.name,
       thickness: await getAttributeValue('thickness', getAttributeIdLocal('thickness', productItem)),
       length: await getAttributeValue('needle_length', getAttributeIdLocal('needle_length', productItem)),
